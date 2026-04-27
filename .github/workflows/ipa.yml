@@ -192,7 +192,7 @@ jobs:
       - name: Build iSponsorBlock
         run: |
           cd iSponsorBlock
-          make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless TARGET=iphone:clang:latest:13.0
           mv packages/*.deb ${{ github.workspace }}/isponsorblock.deb
         
       - name: Build YouPiP
