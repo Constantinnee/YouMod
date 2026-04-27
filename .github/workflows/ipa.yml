@@ -118,18 +118,18 @@ jobs:
         run: git clone --quiet --depth=1 https://github.com/PoomSmart/PSHeader.git $THEOS/include/PSHeader
 
       - name: Clone YTSideload
-        if: ! ${{ inputs.youmod }}
+        if: ${{ !inputs.youmod }}
         run: git clone --quiet --depth=1 https://github.com/Balackburn/YTSideload.git
         
       - name: Clone iSponsorBlock
         run: git clone --quiet --depth=1 https://github.com/Galactic-Dev/iSponsorBlock
 
       - name: Clone YouTube-X
-        if: ! ${{ inputs.youmod }}
+        if: ${{ !inputs.youmod }}
         run: git clone --quiet --depth=1 https://github.com/PoomSmart/YouTube-X.git
 
       - name: Clone YouMod
-        if:  ${{ inputs.youmod }}
+        if: ${{ inputs.youmod }}
         run: git clone --quiet --depth=1 https://github.com/Tonwalter888/YouMod.git
 
       - name: Clone YouPiP
@@ -187,7 +187,7 @@ jobs:
 
 
       - name: Build YouTube-X
-        if: ! ${{ inputs.youmod }}
+        if: ${{ !inputs.youmod }}
         run: |
           cd YouTube-X
           echo "YOUMOD_VERSION=$(grep '^Version:' control | cut -d ' ' -f2)" >> $GITHUB_ENV
@@ -195,7 +195,7 @@ jobs:
           mv packages/*.deb ${{ github.workspace }}/youtubex.deb
 
       - name: Build YTSideload
-        if: ! ${{ inputs.youmod }}
+        if: ${{ !inputs.youmod }}
         run: |
           cd YTSideload
           make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
