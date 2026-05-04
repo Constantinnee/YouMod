@@ -242,16 +242,6 @@ jobs:
           git checkout --quiet
           mv *.appex ${{ github.workspace }}
 
-      - name: Clone YouTubeHeader
-        run: |
-           git clone --quiet --depth=1 https://github.com/PoomSmart/YouTubeHeader.git $THEOS/include/YouTubeHeader
-           if [ "${{ inputs.demc }}" = "true" ]; then
-            cp -r "$THEOS/include/YouTubeHeader" "$THEOS/include/YTHeaders"
-           fi
-
-      - name: Clone PSHeader
-        run: git clone --quiet --depth=1 https://github.com/PoomSmart/PSHeader.git $THEOS/include/PSHeader
-
       - name: Clone YTSideload
         if: ${{ !inputs.youmod }}
         run: git clone --quiet --depth=1 https://github.com/Balackburn/YTSideload.git
