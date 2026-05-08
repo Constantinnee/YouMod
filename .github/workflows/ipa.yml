@@ -337,12 +337,12 @@ jobs:
           make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
           mv packages/*.deb ${{ github.workspace }}/iamyoutube.deb
           
-      - name: Build YTSideload
-        if: ${{ !inputs.youmod }}
-        run: |
-          cd YTSideload
-          make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
-          mv packages/*.deb ${{ github.workspace }}/ytsideload.deb
+      #- name: Build YTSideload
+      #  if: ${{ !inputs.youmod }}
+      #  run: |
+      #    cd YTSideload
+      #    make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+       #   mv packages/*.deb ${{ github.workspace }}/ytsideload.deb
 
       - name: Build YouMod
         if: ${{ inputs.youmod }}
