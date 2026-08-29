@@ -126,6 +126,14 @@ on:
         required: false
         type: boolean
 
+      youmod:
+        description: "youmod instead youtube x"
+        default: false
+        required: true
+        type: boolean
+
+
+
       ytshare:
         description: "Integrate youtube-native-share"
         default: true
@@ -269,13 +277,33 @@ jobs:
           git checkout --quiet
           mv *.appex ${{ github.workspace }}
 
+      #- name: Clone YTSideload
+       # if: ${{ !inputs.youmod }}
+       # run: git clone --quiet --depth=1 https://github.com/Balackburn/YTSideload.git
+        
+      - name: Clone iSponsorBlock
+        run: git clone --quiet --depth=1 https://github.com/Galactic-Dev/iSponsorBlock
+
+      - name: Clone YouTube-X
+        if: ${{ !inputs.youmod }}
+        run: git clone --quiet --depth=1 https://github.com/PoomSmart/YouTube-X.git
+
+      - name: Clone IAmYouTube
+        if: ${{ !inputs.youmod }}
+        run: git clone --quiet --depth=1 https://github.com/PoomSmart/IAmYouTube.git
+
+
+      - name: Clone YouMod
+        if: ${{ inputs.youmod }}
+        run: git clone --quiet --depth=1 https://github.com/Tonwalter888/YouMod.git
+
       - name: Clone YouPiP
         if: ${{ inputs.youpip }}
         run: git clone --quiet --depth=1 https://github.com/PoomSmart/YouPiP.git
     
       - name: Clone YTUHD
         if: ${{ inputs.ytuhd }}
-        run: git clone --quiet --depth=1 https://github.com/Tonwalter888/YTUHD.git
+        run: git clone --quiet --depth=1 https://github.com/PoomSmart/YTUHD.git
            
       - name: Clone Return-YouTube-Dislikes
         if: ${{ inputs.ryd }}
@@ -342,6 +370,27 @@ jobs:
         if: ${{ inputs.getcap }}
         run: git clone --quiet --depth=1 https://github.com/PoomSmart/YouGetCaption.git
 
+      - name: Build YouTube-X
+        if: ${{ !inputs.youmod }}
+        run: |
+          cd YouTube-X
+          echo "YOUMOD_VERSION=$(grep '^Version:' control | cut -d ' ' -f2)" >> $GITHUB_ENV
+          make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          mv packages/*.deb ${{ github.workspace }}/youtubex.deb
+          
+      - name: Build IAmYouTube
+        if: ${{ !inputs.youmod }}
+        run: |
+          cd IAmYouTube
+          make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          mv packages/*.deb ${{ github.workspace }}/iamyoutube.deb
+          
+      #- name: Build YTSideload
+      #  if: ${{ !inputs.youmod }}
+      #  run: |
+      #    cd YTSideload
+      #    make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+       #   mv packages/*.deb ${{ github.workspace }}/ytsideload.deb
       - name: Clone youtube-native-share
         if: ${{ inputs.ytshare }}
         run: git clone --quiet --depth=1 https://github.com/jkhsjdhjs/youtube-native-share.git
@@ -351,11 +400,18 @@ jobs:
         run: git clone --quiet --depth=1 https://github.com/VasirakCalgux/VolumeBoostYT.git
 
       - name: Build YouMod
+        if: ${{ inputs.youmod }}
         run: |
           cd YouMod
           echo "YOUMOD_VERSION=$(grep '^Version:' control | cut -d ' ' -f2)" >> $GITHUB_ENV
           make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
           mv packages/*.deb ${{ github.workspace }}/youmod.deb
+
+      - name: Build iSponsorBlock
+        run: |
+          cd iSponsorBlock
+          make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless TARGET=iphone:clang:latest:13.0
+          mv packages/*.deb ${{ github.workspace }}/isponsorblock.deb
         
       - name: Build YouPiP
         if: ${{ inputs.youpip }}
